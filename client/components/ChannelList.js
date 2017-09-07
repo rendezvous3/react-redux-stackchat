@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 import store from '../store';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 // These values are all hardcoded...for now!
 // Soon, we'll fetch them from the server!
@@ -41,7 +42,10 @@ const ChannelList = (props) => {
 /** Write your `connect` component below! **/
 
 // here we choose pieces of state want to pass as props to dumpb component
-const mapStateToProps = function(state) {
+const mapStateToProps = function(state, ownProps) {
+
+  console.log('Container own props:', ownProps);
+
   return {
     messages: state.messages,
      channels : state.channels
@@ -53,4 +57,5 @@ const mapStateToProps = function(state) {
 // our store changes, this component will know that it needs to rerender
 // dumb component that we passed in, ChannelList
 const ChannelListContainer = connect(mapStateToProps)(ChannelList);
-export default ChannelListContainer;
+const ContainerWithRouter = withRouter(ChannelListContainer);
+export default ContainerWithRouter;

@@ -70,11 +70,15 @@ export function writeMessage (content) {
 
 // THUNK CREATORS
 
-export function postChannel(channel) {
+export function postChannel(channel, history) {
   return function(dispatch) {
     axios.post('/api/channels', channel)
     .then(res => res.data)
-    .then(newChannel => dispatch(getChannel(newChannel))) 
+    .then(newChannel => {
+      dispatch(getChannel(newChannel));
+      socket.emit('new-channel', newChannel);
+      history.push(`/channels/${newChannel.id}`);
+    }) 
   }
 }
 
@@ -87,7 +91,7 @@ export function fetchChannels(){
   }
 }
 
-export function fetchMessages () {
+export function fetchMessages() {
 
   return function thunk (dispatch) {
     return axios.get('/api/messages')
