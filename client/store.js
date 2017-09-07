@@ -11,7 +11,8 @@ const initialState = {
   messages: [],
   name: 'Reggie',
   newMessageEntry: '',
-  channels: []
+  channels: [],
+  newChannelEntry: ''
 };
 
 // ACTION TYPES
@@ -21,8 +22,24 @@ const GET_MESSAGE = 'GET_MESSAGE';
 const GET_MESSAGES = 'GET_MESSAGES';
 const WRITE_MESSAGE = 'WRITE_MESSAGE';
 const GET_CHANNELS = 'GET_CHANNELS';
+const WRITE_CHANNEL_NAME = 'WRITE_CHANNEL_NAME';
+const GET_CHANNEL = 'GET_CHANNEL';
 
 // ACTION CREATORS
+
+export function writeChannelName(channelName) {
+  return {
+    type: WRITE_CHANNEL_NAME,
+    newChannelEntry: channelName
+  }
+}
+
+export function getChannel(channel){
+  return {
+    type: GET_CHANNEL,
+    channel
+  }
+}
 
 export function getChannels(channels){
   return {
@@ -52,6 +69,14 @@ export function writeMessage (content) {
 }
 
 // THUNK CREATORS
+
+export function postChannel(channel) {
+  return function(dispatch) {
+    axios.post('/api/channels', channel)
+    .then(res => res.data)
+    .then(newChannel => dispatch(getChannel(newChannel))) 
+  }
+}
 
 export function fetchChannels(){
 
@@ -115,6 +140,18 @@ export function postMessage (message) {
 function reducer (state = initialState, action) {
 
   switch (action.type) {
+
+    case WRITE_CHANNEL_NAME:
+      return {
+        ...state,
+        newChannelEntry: action.newChannelEntry
+      }
+
+    case GET_CHANNEL:
+      return {
+        ...state,
+        channels: [...state.channels, action.channel]
+      }  
 
     case GET_CHANNELS:
       return {
