@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, combineReducers } from 'redux';
 import createLogger from 'redux-logger';
 import thunkMiddleware from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
@@ -141,6 +141,25 @@ export function postMessage (message) {
  * Note: this is still an experimental language feature (though it is on its way to becoming official).
  * We can use it now because we are using a special babel plugin with webpack (babel-preset-stage-2)!
  */
+
+// function messagesReducer(state=[], action) {
+//   switch(action.type){
+//     case ADD_MESSAGE:
+//       return [...state, action.message]
+//     default:
+//       return state; 
+//   }
+// }
+
+// function inputReducer(state = '', action) {
+//   switch(action.type) {
+//     case UPDATE_INPUT:
+//       return action.input;
+//     default:
+//       return state;  
+//   }
+// }
+
 function reducer (state = initialState, action) {
 
   switch (action.type) {
@@ -192,6 +211,11 @@ function reducer (state = initialState, action) {
   }
 
 }
+
+// const rootReducer = combineReducers({
+//   messages: messagesReducer,
+//   input: inputReducer
+// })
 
 const store = createStore(
   reducer,
