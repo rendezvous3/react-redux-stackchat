@@ -14,38 +14,27 @@ const LUNCH_CHANNEL = '/channels/4';
 
 const ChannelList = (props) => {
 
-  const { messages } = props;
+  const { messages, channels } = props;
 
   return (
     <ul>
-      <li>
-        <NavLink to={RANDOM_CHANNEL} activeClassName="active">
-          <span># really_random</span>
-          <span className="badge">{ messages.filter(message => message.channelId === 1).length }</span>
-        </NavLink>
-      </li>
-      <li>
-        <NavLink to={GENERAL_CHANNEL} activeClassName="active">
-          <span># generally_speaking</span>
-          <span className="badge">{ messages.filter(message => message.channelId === 2).length }</span>
-        </NavLink>
-      </li>
-      <li>
-        <NavLink to={DOGS_CHANNEL} activeClassName="active">
-          <span># dogs_of_fullstack</span>
-          <span className="badge">{ messages.filter(message => message.channelId === 3).length }</span>
-        </NavLink>
-      </li>
-      <li>
-        <NavLink to={LUNCH_CHANNEL} activeClassName="active">
-          <span># lunch_planning</span>
-          <span className="badge">{ messages.filter(message => message.channelId === 4).length }</span>
-        </NavLink>
-      </li>
-      <li>
-        <NavLink to="/new-channel">Create a channel...</NavLink>
-      </li>
+    {
+      channels.map(channel => {
+        return (
+        <li key={channel.id}>
+          <NavLink to={`/channels/${channel.id}`} activeClassName="active">
+            <span># {channel.name}</span>
+            <span className="badge">{ messages.filter(message => message.channelId === channel.id).length }</span>
+          </NavLink>
+        </li>
+        )
+      })
+    }
+    <li>
+      <NavLink to="/new-channel">Create a new channel...</NavLink>
+    </li>
     </ul>
+
   );
 }
 
@@ -54,7 +43,8 @@ const ChannelList = (props) => {
 // here we choose pieces of state want to pass as props to dumpb component
 const mapStateToProps = function(state) {
   return {
-    messages: state.messages
+    messages: state.messages,
+     channels : state.channels
   };
 }
 
